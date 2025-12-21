@@ -139,7 +139,7 @@ FLUSH PRIVILEGES;
 
 ---
 👨‍💻 Автор
-Sergey Akulov
+Сергей Акулов
 
 Разработка и поддержка.
 GitHub: [@serg-akulov](https://github.com/serg-akulov)
