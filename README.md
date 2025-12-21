@@ -1,6 +1,9 @@
 # 🤖 Telegram Bot: Turner CRM (Токарные работы)
-[![Developer](https://img.shields.io/badge/Developer-Sergey%20Akulov-blue)](https://github.com/serg-akulov)
+[![Developer](https://img.shields.io/badge/Developer-Sergey%20Akulov-blue)](https://github.com/serg-akulov) [![Profile Views](https://komarev.com/ghpvc/?username=serg-akulov-turner-bot&label=Project%20Views&color=0e75b6&style=flat)](https://github.com/serg-akulov)
 
+<img width="1166" height="735" alt="11111111111111111111111111111111" src="https://github.com/user-attachments/assets/6d8b5782-3fc8-444b-a128-532281845ed8" />
+
+---
 Простой и мощный бот для приема заказов на токарные/фрезерные работы с удобной админ-панелью. Клиент проходит опрос (фото, тип работы, размеры), а вы получаете структурированный заказ.
 
 ### ✨ Возможности
@@ -12,6 +15,11 @@
 
 ---
 
+<img width="1638" height="1312" alt="333333333333333333" src="https://github.com/user-attachments/assets/630d607f-e51a-496a-8327-0da0e4a04499" />
+<img width="1636" height="582" alt="222222222222222222222222" src="https://github.com/user-attachments/assets/f745dfb8-a063-4c3b-867d-98164ca6b9eb" />
+<img width="1333" height="760" alt="44444444444444" src="https://github.com/user-attachments/assets/45f0ded2-cc06-470d-917a-1e0f96e4b8a0" />
+
+---
 ### 🛠 Требования
 *   VPS/VDS с **Ubuntu 20.04** или **22.04** (можно и Debian).
 *   Установленный **MySQL** (или MariaDB) и **Web-сервер** (Apache/Nginx + PHP) для админки.
@@ -134,6 +142,6 @@ FLUSH PRIVILEGES;
 Sergey Akulov
 
 Разработка и поддержка.
-GitHub: @serg-akulov
+GitHub: [@serg-akulov](https://github.com/serg-akulov)
 
 Copyright © 2025. Released under the MIT License.
