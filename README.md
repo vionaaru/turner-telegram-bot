@@ -42,7 +42,7 @@ FLUSH PRIVILEGES;
 1. Клонируйте репозиторий:
    ```bash
    git clone https://github.com/serg-akulov/turner-telegram-bot.git
-   cd ПУТЬ_К_ПАПКЕ_КУДА_КЛОНИРОЛИ
+   cd turner-telegram-bot
    ```
 
 2. Сделайте скрипт установки исполняемым и запустите его:
