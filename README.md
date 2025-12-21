@@ -130,4 +130,10 @@ FLUSH PRIVILEGES;
 *   `php_config.php` — Генерируется автоматически, хранит пароли для админки.
 
 ---
-*License: MIT*
+👨‍💻 Автор
+Sergey Akulov
+
+Разработка и поддержка.
+GitHub: @serg-akulov
+
+Copyright © 2025. Released under the MIT License.
