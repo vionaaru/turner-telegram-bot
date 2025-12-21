@@ -1,0 +1,14 @@
+# Виртуальное окружение
+venv/
+env/
+
+# Личные настройки и пароли
+.env
+php_config.php
+
+# Системный мусор
+__pycache__/
+*.pyc
+.DS_Store
+.idea/
+.vscode/
