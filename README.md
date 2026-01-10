@@ -1,5 +1,5 @@
 # 🤖 Telegram Bot: Turner CRM (Токарные работы)
-[![Developer](https://img.shields.io/badge/Developer-Sergey%20Akulov-blue)](https://github.com/serg-akulov) [![Profile Views](https://komarev.com/ghpvc/?username=serg-akulov-turner-bot&label=Project%20Views&color=0e75b6&style=flat)](https://github.com/serg-akulov)
+[![Website](https://img.shields.io/website?label=akulov-dev.ru&style=for-the-badge&url=https%3A%2F%2Fakulov-dev.ru)](https://akulov-dev.ru)  [![Developer](https://img.shields.io/badge/Developer-Sergey%20Akulov-blue)](https://github.com/serg-akulov) [![Profile Views](https://komarev.com/ghpvc/?username=serg-akulov-turner-bot&label=Project%20Views&color=0e75b6&style=flat)](https://github.com/serg-akulov)
 
 <img width="1166" height="735" alt="11111111111111111111111111111111" src="https://github.com/user-attachments/assets/6d8b5782-3fc8-444b-a128-532281845ed8" />
 
@@ -138,8 +138,10 @@ FLUSH PRIVILEGES;
 *   `php_config.php` — Генерируется автоматически, хранит пароли для админки.
 
 ---
-👨‍💻 Автор
-Сергей Акулов
+👨‍💻 Автор: Сергей Акулов
+
+Инди-разработчик и Токарь.
+🛠️ Больше полезного софта для металлообработки: [akulov-dev.ru](https://akulov-dev.ru)
 
 Разработка и поддержка.
 GitHub: [@serg-akulov](https://github.com/serg-akulov)
