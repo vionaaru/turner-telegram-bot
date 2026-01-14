@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Настройка базового URL для API
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Настройка базового URL для API (используем относительные пути для прокси)
+// axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 const AuthContext = createContext();
 

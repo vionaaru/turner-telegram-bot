@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 import database
 from routers.auth import verify_token
 
@@ -19,7 +20,7 @@ class OrderBase(BaseModel):
     urgency: Optional[str]
     comment: Optional[str]
     photo_file_id: Optional[str]
-    created_at: str
+    created_at: datetime
     internal_note: Optional[str]
 
 class OrderUpdate(BaseModel):
@@ -93,7 +94,8 @@ async def get_order_photos(order_id: int, payload: dict = Depends(verify_token))
         if not order or not order['photo_file_id']:
             return {"photos": []}
 
-        photos = order['photo_file_id'].split(',')
+        raw_photos = order['photo_file_id'].split(',')
+        photos = [p[2:] if p.startswith(('p:', 'd:')) else p for p in raw_photos]
         return {"photos": photos}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ошибка получения фото: {str(e)}")

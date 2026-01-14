@@ -75,7 +75,7 @@
 
 4. **Запустите всё одной командой:**
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 5. **Доступ к сервисам:**
@@ -201,40 +201,37 @@
 #### Docker команды
 ```bash
 # Запуск всех сервисов
-docker-compose up -d
+docker compose up -d
 
 # Остановка всех сервисов
-docker-compose down
+docker compose down
 
 # Просмотр логов
-docker-compose logs -f
+docker compose logs -f
 
 # Пересборка после изменений
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # Вход в контейнер
-docker-compose exec backend bash
+docker compose exec backend bash
 ```
 
-#### Работа с ботом
-```bash
 # Перезапуск бота (после изменения настроек)
-docker-compose restart bot
+docker compose restart bot
 
 # Просмотр логов бота
-docker-compose logs -f bot
+docker compose logs -f bot
 
 # Просмотр логов API
-docker-compose logs -f backend
-```
+docker compose logs -f backend
 
 #### Работа с базой данных
 ```bash
 # Вход в MySQL контейнер
-docker-compose exec mysql mysql -u turner_user -p turner_db
+docker compose exec mysql mysql -u turner_user -p turner_db
 
 # Бэкап базы
-docker-compose exec mysql mysqldump -u turner_user -p turner_db > backup.sql
+docker compose exec mysql mysqldump -u turner_user -p turner_db > backup.sql
 ```
 
 ---

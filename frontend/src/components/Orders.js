@@ -5,18 +5,17 @@ import {
 } from 'antd';
 import {
   EyeOutlined, EditOutlined, ShoppingCartOutlined,
-  UserOutlined, ClockCircleOutlined, CheckCircleOutlined,
-  CloseCircleOutlined, SyncOutlined
+  UserOutlined, SyncOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import AuthContext from '../contexts/AuthContext';
 
 const { Option } = Select;
-const { TextArea } = Form;
+const { TextArea } = Input;
 
 const Orders = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { loading: authLoading } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -36,11 +35,9 @@ const Orders = () => {
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchOrders();
-      fetchStats();
-    }
-  }, [isAuthenticated, pagination.current, statusFilter]);
+    fetchOrders();
+    fetchStats();
+  }, [pagination.current, statusFilter]);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -53,7 +50,7 @@ const Orders = () => {
         }
       });
       setOrders(response.data);
-      setPagination(prev => ({ ...prev, total: response.data.length * 5 })); // Примерная оценка
+      setPagination(prev => ({ ...prev, total: response.data.length * 5 }));
     } catch (error) {
       message.error('Ошибка загрузки заказов');
       console.error(error);
@@ -68,32 +65,6 @@ const Orders = () => {
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
-  };
-
-  const getStatusColor = (status) => {
-    const colors = {
-      'filling': 'default',
-      'new': 'success',
-      'discussion': 'processing',
-      'approved': 'purple',
-      'work': 'cyan',
-      'done': 'dark',
-      'rejected': 'error'
-    };
-    return colors[status] || 'default';
-  };
-
-  const getStatusText = (status) => {
-    const texts = {
-      'filling': '✍️ Заполняет',
-      'new': '🔥 НОВЫЙ',
-      'discussion': '💬 Обсуждение',
-      'approved': '🛠 В работе',
-      'work': '⚙️ Выполняется',
-      'done': '✅ ГОТОВ',
-      'rejected': '❌ Отказ'
-    };
-    return texts[status] || status;
   };
 
   const handleStatusChange = async (orderId, newStatus) => {
@@ -111,7 +82,6 @@ const Orders = () => {
     setSelectedOrder(order);
     setModalVisible(true);
 
-    // Загружаем фото
     try {
       const response = await axios.get(`/api/orders/${order.id}/photos`);
       setPhotos(response.data.photos);
@@ -226,190 +196,175 @@ const Orders = () => {
   ];
 
   return (
-    <div className="dashboard-container">
-      <div className="content-area">
-        <h1>📦 Управление заказами</h1>
+    <div className="orders-content">
+      <h1>📦 Управление заказами</h1>
 
-        {/* Статистика */}
-        <Row gutter={16} style={{ marginBottom: 24 }}>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Всего заказов"
-                value={stats.total_orders}
-                prefix={<ShoppingCartOutlined />}
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Новых заказов"
-                value={stats.new_orders}
-                prefix={<Badge dot status="success"><ShoppingCartOutlined /></Badge>}
-                valueStyle={{ color: '#52c41a' }}
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Активных заказов"
-                value={stats.active_orders}
-                prefix={<SyncOutlined spin />}
-                valueStyle={{ color: '#1890ff' }}
-              />
-            </Card>
-          </Col>
-        </Row>
+      <Row gutter={16} style={{ marginBottom: 24 }}>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Всего заказов"
+              value={stats.total_orders}
+              prefix={<ShoppingCartOutlined />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Новых заказов"
+              value={stats.new_orders}
+              prefix={<Badge dot status="success"><ShoppingCartOutlined /></Badge>}
+              valueStyle={{ color: '#52c41a' }}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Активных заказов"
+              value={stats.active_orders}
+              prefix={<SyncOutlined spin />}
+              valueStyle={{ color: '#1890ff' }}
+            />
+          </Card>
+        </Col>
+      </Row>
 
-        {/* Фильтры */}
-        <Card style={{ marginBottom: 16 }}>
-          <Space>
-            <span>Фильтр по статусу:</span>
-            <Select
-              allowClear
-              placeholder="Все статусы"
-              style={{ width: 200 }}
-              value={statusFilter}
-              onChange={setStatusFilter}
-            >
-              <Option value="new">🔥 Новые</Option>
-              <Option value="discussion">💬 Обсуждение</Option>
-              <Option value="approved">🛠 В работе</Option>
-              <Option value="work">⚙️ Выполняется</Option>
-              <Option value="done">✅ Готовые</Option>
-              <Option value="rejected">❌ Отказы</Option>
-            </Select>
-            <Button onClick={fetchOrders}>Обновить</Button>
-          </Space>
-        </Card>
+      <Card style={{ marginBottom: 16 }}>
+        <Space>
+          <span>Фильтр по статусу:</span>
+          <Select
+            allowClear
+            placeholder="Все статусы"
+            style={{ width: 200 }}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          >
+            <Option value="new">🔥 Новые</Option>
+            <Option value="discussion">💬 Обсуждение</Option>
+            <Option value="approved">🛠 В работе</Option>
+            <Option value="work">⚙️ Выполняется</Option>
+            <Option value="done">✅ Готовые</Option>
+            <Option value="rejected">❌ Отказы</Option>
+          </Select>
+          <Button onClick={fetchOrders}>Обновить</Button>
+        </Space>
+      </Card>
 
-        {/* Таблица заказов */}
-        <Table
-          columns={columns}
-          dataSource={orders}
-          rowKey="id"
-          loading={loading}
-          pagination={{
-            ...pagination,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} заказов`,
-          }}
-          onChange={(pagination) => setPagination(pagination)}
-        />
+      <Table
+        columns={columns}
+        dataSource={orders}
+        rowKey="id"
+        loading={loading}
+        pagination={{
+          ...pagination,
+          showSizeChanger: true,
+          showQuickJumper: true,
+          showTotal: (total, range) => `${range[0]}-${range[1]} из ${total} заказов`,
+        }}
+        onChange={(pagination) => setPagination(pagination)}
+      />
 
-        {/* Модальное окно деталей заказа */}
-        <Modal
-          title={`Заказ №${selectedOrder?.id}`}
-          open={modalVisible}
-          onCancel={() => setModalVisible(false)}
-          footer={null}
-          width={800}
-        >
-          {selectedOrder && (
-            <div>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <h3>👤 Информация о клиенте</h3>
-                  <p><strong>Имя:</strong> {selectedOrder.full_name}</p>
-                  <p><strong>Username:</strong> @{selectedOrder.username}</p>
-                  <p><strong>Telegram ID:</strong> {selectedOrder.user_id}</p>
-                </Col>
-                <Col span={12}>
-                  <h3>📋 Детали заказа</h3>
-                  <p><strong>Тип работы:</strong> {selectedOrder.work_type}</p>
-                  <p><strong>Размеры:</strong> {selectedOrder.dimensions_info}</p>
-                  <p><strong>Условия:</strong> {selectedOrder.conditions}</p>
-                  <p><strong>Срочность:</strong> {selectedOrder.urgency}</p>
-                </Col>
-              </Row>
+      <Modal
+        title={`Заказ №${selectedOrder?.id}`}
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+        width={800}
+      >
+        {selectedOrder && (
+          <div>
+            <Row gutter={16}>
+              <Col span={12}>
+                <h3>👤 Информация о клиенте</h3>
+                <p><strong>Имя:</strong> {selectedOrder.full_name}</p>
+                <p><strong>Username:</strong> @{selectedOrder.username}</p>
+                <p><strong>Telegram ID:</strong> {selectedOrder.user_id}</p>
+              </Col>
+              <Col span={12}>
+                <h3>📋 Детали заказа</h3>
+                <p><strong>Тип работы:</strong> {selectedOrder.work_type}</p>
+                <p><strong>Размеры:</strong> {selectedOrder.dimensions_info}</p>
+                <p><strong>Условия:</strong> {selectedOrder.conditions}</p>
+                <p><strong>Срочность:</strong> {selectedOrder.urgency}</p>
+              </Col>
+            </Row>
 
-              <div style={{ marginTop: 16 }}>
-                <h3>💬 Комментарий</h3>
-                <p>{selectedOrder.comment || 'Нет комментария'}</p>
-              </div>
-
-              {photos.length > 0 && (
-                <div style={{ marginTop: 16 }}>
-                  <h3>📸 Фото</h3>
-                  <div className="photo-gallery">
-                    {photos.map((photoId, index) => (
-                      <Image
-                        key={index}
-                        src={`https://api.telegram.org/file/bot${process.env.REACT_APP_BOT_TOKEN}/${photoId}`}
-                        alt={`Фото ${index + 1}`}
-                        className="photo-item"
-                        placeholder={<div className="photo-item">Загрузка...</div>}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {selectedOrder.internal_note && (
-                <div style={{ marginTop: 16 }}>
-                  <h3>📝 Внутренняя заметка</h3>
-                  <p>{selectedOrder.internal_note}</p>
-                </div>
-              )}
+            <div style={{ marginTop: 16 }}>
+              <h3>💬 Комментарий</h3>
+              <p>{selectedOrder.comment || 'Нет комментария'}</p>
             </div>
-          )}
-        </Modal>
 
-        {/* Модальное окно редактирования */}
-        <Modal
-          title={`Редактирование заказа №${selectedOrder?.id}`}
-          open={editModalVisible}
-          onCancel={() => setEditModalVisible(false)}
-          footer={null}
-        >
-          {selectedOrder && (
-            <Form
-              layout="vertical"
-              onFinish={handleEditSubmit}
-              initialValues={{
-                status: selectedOrder.status,
-                internal_note: selectedOrder.internal_note || ''
-              }}
+            {photos.length > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <h3>📸 Фото</h3>
+                <div className="photo-gallery">
+                  {photos.map((photoId, index) => (
+                    <Image
+                      key={index}
+                      src={`https://api.telegram.org/file/bot${process.env.REACT_APP_BOT_TOKEN}/${photoId}`}
+                      alt={`Фото ${index + 1}`}
+                      className="photo-item"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
+
+      <Modal
+        title={`Редактирование заказа №${selectedOrder?.id}`}
+        open={editModalVisible}
+        onCancel={() => setEditModalVisible(false)}
+        footer={null}
+      >
+        {selectedOrder && (
+          <Form
+            layout="vertical"
+            onFinish={handleEditSubmit}
+            initialValues={{
+              status: selectedOrder.status,
+              internal_note: selectedOrder.internal_note || ''
+            }}
+          >
+            <Form.Item
+              name="status"
+              label="Статус"
+              rules={[{ required: true }]}
             >
-              <Form.Item
-                name="status"
-                label="Статус"
-                rules={[{ required: true }]}
-              >
-                <Select>
-                  <Option value="new">🔥 НОВЫЙ</Option>
-                  <Option value="discussion">💬 Обсуждение</Option>
-                  <Option value="approved">🛠 В работе</Option>
-                  <Option value="work">⚙️ Выполняется</Option>
-                  <Option value="done">✅ ГОТОВ</Option>
-                  <Option value="rejected">❌ Отказ</Option>
-                </Select>
-              </Form.Item>
+              <Select>
+                <Option value="new">🔥 НОВЫЙ</Option>
+                <Option value="discussion">💬 Обсуждение</Option>
+                <Option value="approved">🛠 В работе</Option>
+                <Option value="work">⚙️ Выполняется</Option>
+                <Option value="done">✅ ГОТОВ</Option>
+                <Option value="rejected">❌ Отказы</Option>
+              </Select>
+            </Form.Item>
 
-              <Form.Item
-                name="internal_note"
-                label="Внутренняя заметка"
-              >
-                <TextArea rows={4} placeholder="Внутренняя заметка для администратора" />
-              </Form.Item>
+            <Form.Item
+              name="internal_note"
+              label="Внутренняя заметка"
+            >
+              <TextArea rows={4} placeholder="Внутренняя заметка для администратора" />
+            </Form.Item>
 
-              <Form.Item style={{ textAlign: 'right' }}>
-                <Space>
-                  <Button onClick={() => setEditModalVisible(false)}>
-                    Отмена
-                  </Button>
-                  <Button type="primary" htmlType="submit">
-                    Сохранить
-                  </Button>
-                </Space>
-              </Form.Item>
-            </Form>
-          )}
-        </Modal>
-      </div>
+            <Form.Item style={{ textAlign: 'right' }}>
+              <Space>
+                <Button onClick={() => setEditModalVisible(false)}>
+                  Отмена
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Сохранить
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        )}
+      </Modal>
     </div>
   );
 };

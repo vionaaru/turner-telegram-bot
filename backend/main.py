@@ -13,11 +13,23 @@ load_dotenv()
 
 app = FastAPI(title="CRM API", description="API для управления заказами токарных работ")
 
-# Настройка CORS
+# Список разрешенных источников
+frontend_port = os.getenv("FRONTEND_PORT", "3000")
+origins = [
+    "http://localhost:3000",
+    "http://frontend:3000",
+    f"http://localhost:{frontend_port}",
+    f"http://127.0.0.1:{frontend_port}",
+    f"http://frontend:{frontend_port}",
+    "*" # Попробуем разрешить всё для теста
+]
+
+print(f"DEBUG: Origins: {origins}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://frontend:3000"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False, # С "*" нельзя True
     allow_methods=["*"],
     allow_headers=["*"],
 )

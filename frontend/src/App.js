@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Orders from './components/Orders';
 import BotConfig from './components/BotConfig';
+import MainLayout from './components/MainLayout';
 
 // Контекст аутентификации
 import { AuthProvider } from './contexts/AuthContext';
@@ -21,10 +22,12 @@ function App() {
           <div className="App">
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/bot-config" element={<BotConfig />} />
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route element={<MainLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/bot-config" element={<BotConfig />} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              </Route>
             </Routes>
           </div>
         </Router>

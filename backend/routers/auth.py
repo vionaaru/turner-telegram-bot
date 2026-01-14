@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
-import jwt
+from jose import jwt, JWTError
 import datetime
 import os
 from database import get_bot_config
@@ -28,7 +28,7 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
-    except jwt.JWTError:
+    except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.post("/login")
